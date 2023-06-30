@@ -1,1 +1,3 @@
-space_invaders.py
+import pygame
+print('hello world')
+
