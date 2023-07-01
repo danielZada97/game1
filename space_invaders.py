@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 import math
-
+clock=pygame.time.Clock()
 #initialize pygame
 pygame.init()
 #screen resolution ,icon and name and background
@@ -12,7 +12,9 @@ screen=pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Space invaders")
 icon=pygame.image.load("logo.png")
 pygame.display.set_icon(icon)
-background=pygame.image.load("background.jpg")
+background=pygame.image.load("background.jpg").convert()
+scroll=0
+tiles=math.ceil(SCREEN_WIDTH/background.get_height())+1
 
 #player
 playerImage=pygame.image.load("player.png")
@@ -60,10 +62,17 @@ def isCollision(enemyX,enemyY,bulletX,bulletY):
     return True if distance <= 27 else False
 run=True
 while run:
-    screen.fill((0,0,0))
+    clock.tick(1000)
     #set background
-    screen.blit(background,(0,0))
-  
+    i=0
+    while(i<tiles):
+          screen.blit(background,(0,background.get_height()*i+scroll))
+          i+=1
+    scroll-=0.1
+    if abs(scroll)>background.get_height():
+         scroll=0
+    
+        
     player(playerX,playerY)
     
     
@@ -115,5 +124,6 @@ while run:
         match event.type:
             case pygame.QUIT:
                 run=False
+    
     pygame.display.update()
 pygame.quit()
